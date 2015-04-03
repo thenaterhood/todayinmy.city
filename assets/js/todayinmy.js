@@ -284,7 +284,7 @@ function getMeetups(geoip_data, address)
     var town = address.normalized_town;
 
     $.getJSON(
-            "http://todayinmycity.herokuapp.com/endpoint/meetup?longitude=" +
+            "/endpoint/meetup?longitude=" +
             geoip_data.coords.longitude + "&latitude=" +
             geoip_data.coords.latitude + "&city=" + encodeURIComponent(town) +
             "&state=" + encodeURIComponent(address.state),
