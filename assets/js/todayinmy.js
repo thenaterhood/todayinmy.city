@@ -211,6 +211,8 @@ function reverseLookupCity(latitude, longitude, callback)
                     town = address.suburb;
                 } else if (address.hasOwnProperty('hamlet')) {
                     town = address.hamlet;
+                } else if (address.hasOwnProperty('village')) {
+                    town = address.village;
                 }
 
                 address.normalized_town = town;
