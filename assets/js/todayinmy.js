@@ -89,17 +89,17 @@ function toggleTemperatureUnit(id)
     var temp_unit = document.getElementById(id + "_unit").innerHTML;
 
     switch (temp_unit) {
-            case "C":
+        case "C":
 
-                temperature = 9/5 * (temperature) + 32;
-                temp_unit = "F";
-                break;
-            case "F":
-                temperature = 5/9 * (temperature - 32);
-                temp_unit = "C";
-                break;
-            default:
-                break;
+            temperature = 9/5 * (temperature) + 32;
+            temp_unit = "F";
+            break;
+        case "F":
+            temperature = 5/9 * (temperature - 32);
+            temp_unit = "C";
+            break;
+        default:
+            break;
     }
 
     document.getElementById(id).innerHTML = temperature.toPrecision(4);
@@ -138,7 +138,6 @@ function populatePage(geolocation)
                 document.getElementById("cityname").innerHTML =
                     address.normalized_town;
                 $("#locateme").addClass("hidden");
-                $("#weatherinfo").removeClass("hidden");
                 getWeather(address);
                 getMeetups(geolocation, address);
             });
@@ -205,7 +204,7 @@ function reverseLookupCity(latitude, longitude, callback)
 {
     $.getJSON(
             "http://nominatim.openstreetmap.org/reverse?format=json&lat="
-                + latitude + "&lon=" + longitude + "&zoom=18",
+            + latitude + "&lon=" + longitude + "&zoom=18",
             function(json) {
                 address = json.address
                     var town = null;
@@ -239,7 +238,7 @@ function getWeather(address)
 
     $.getJSON(
             "http://api.openweathermap.org/data/2.5/weather?q=" +
-                encodeURIComponent(address.normalized_town + "," +
+            encodeURIComponent(address.normalized_town + "," +
                 address.state),
             function(weather) {
                 var temperatureF = 9/5 * (weather.main.temp - 273) + 32;
@@ -257,25 +256,28 @@ function getWeather(address)
                 var sunriseVerbage = "will rise";
 
                 if (sunrise > now && sunrise.getDay() > now.getDay()) {
-                        sunriseVerbage = "will rise tomorrow at";
+                    sunriseVerbage = "will rise tomorrow at";
                 } else if (sunrise < now) {
-                        sunriseVerbage = "rose at";
+                    sunriseVerbage = "rose at";
                 } else if (sunrise >= now) {
-                        sunriseVerage = "will rise at";
+                    sunriseVerage = "will rise at";
                 }
 
                 if (sunset > now && sunset.getDay() > now.getDay()) {
-                        sunsetVerbage = "will set tomorrow at";
+                    sunsetVerbage = "will set tomorrow at";
                 } else if (sunset < now) {
-                        sunsetVerbage = "set at";
+                    sunsetVerbage = "set at";
                 } else if (sunset >= now) {
-                        sunsetVerbage = "will set at";
+                    sunsetVerbage = "will set at";
                 }
+
 
                 document.getElementById("sunset").innerHTML =
                     sunsetVerbage + " " + formatTime(sunset);
                 document.getElementById("sunrise").innerHTML =
                     sunriseVerbage + " " + formatTime(sunrise);
+
+                $("#weatherinfo").removeClass("hidden");
             });
 
 }
@@ -299,13 +301,13 @@ function getMeetups(geoip_data, address)
             function(meetups) {
                 var top4 = meetups.results.slice(0,8);
                 document.getElementById("meetup_events").innerHTML = '';
-                    for (i = 0; i < top4.length; i++) {
-                        var etime = new Date(top4[i].time);
-                        var etime_friendly = formatTime(etime);
-                        top4[i].time = etime_friendly;
-                        document.getElementById("meetup_events").innerHTML += 
-                            Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}}</p>', top4[i]);
-                    }
+                for (i = 0; i < top4.length; i++) {
+                    var etime = new Date(top4[i].time);
+                    var etime_friendly = formatTime(etime);
+                    top4[i].time = etime_friendly;
+                    document.getElementById("meetup_events").innerHTML += 
+                        Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}}</p>', top4[i]);
+                }
             });
 }
 
