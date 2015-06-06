@@ -80,6 +80,12 @@ function isDay(t)
 function toggleTemperatureUnit(id)
 {
     var temperature = document.getElementById(id).innerHTML;
+
+    if (isNaN(temperature)) {
+        console.log("Can't convert " + temperature + " temperature units");
+        return;
+    }
+
     var temp_unit = document.getElementById(id + "_unit").innerHTML;
 
     switch (temp_unit) {
