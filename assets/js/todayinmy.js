@@ -138,7 +138,7 @@ function populatePage(geolocation)
                 document.getElementById("cityname").innerHTML =
                     address.normalized_town;
                 $("#locateme").addClass("hidden");
-                getWeather(address);
+                getWeather(geolocation);
                 getMeetups(geolocation, address);
             });
 }
@@ -237,45 +237,17 @@ function getWeather(address)
     console.log(address);
 
     $.getJSON(
-            "http://api.openweathermap.org/data/2.5/weather?q=" +
-            encodeURIComponent(address.normalized_town + "," +
-                address.state),
+            "http://forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
+            encodeURIComponent(address.coords.latitude) +
+            "&lon=" +
+            encodeURIComponent(address.coords.longitude),
             function(weather) {
-                var temperatureF = 9/5 * (weather.main.temp - 273) + 32;
+                var temperatureF = weather.currentObservation.Temp;
                 document.getElementById("weatherdescription").innerHTML =
-                    weather.weather[0].description;
+                    weather.currentObservation.Weather;
 
                 document.getElementById("temperature").innerHTML =
                     temperatureF.toPrecision(4);
-
-                var sunset = new Date(weather.sys.sunset * 1000);
-                var sunrise = new Date(weather.sys.sunrise * 1000);
-                var now = new Date();
-
-                var sunsetVerbage = "will set";
-                var sunriseVerbage = "will rise";
-
-                if (sunrise > now && sunrise.getDay() > now.getDay()) {
-                    sunriseVerbage = "will rise tomorrow at";
-                } else if (sunrise < now) {
-                    sunriseVerbage = "rose at";
-                } else if (sunrise >= now) {
-                    sunriseVerage = "will rise at";
-                }
-
-                if (sunset > now && sunset.getDay() > now.getDay()) {
-                    sunsetVerbage = "will set tomorrow at";
-                } else if (sunset < now) {
-                    sunsetVerbage = "set at";
-                } else if (sunset >= now) {
-                    sunsetVerbage = "will set at";
-                }
-
-
-                document.getElementById("sunset").innerHTML =
-                    sunsetVerbage + " " + formatTime(sunset);
-                document.getElementById("sunrise").innerHTML =
-                    sunriseVerbage + " " + formatTime(sunrise);
 
                 $("#weatherinfo").removeClass("hidden");
             });
