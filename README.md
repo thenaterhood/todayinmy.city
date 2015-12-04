@@ -9,6 +9,8 @@ As a sidenote to anyone viewing the code, this was a "let's learn
 JavaScript and Node" project so the code is in need of some work.
 It will get cleaned up in time.
 
+[todayinmy.city](http://todayinmy.city)
+
 ## APIs
 
 * forecast.weather.gov
