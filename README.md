@@ -26,7 +26,7 @@ http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
 
 ## License
 
-HoldThis is licensed under the MIT license (included as LICENSE).
+TodayInMyCity is licensed under the MIT license (included as LICENSE).
 
 Though not required by the license terms, please consider contributing,
 providing feedback, or simply dropping a line to say that this software was
