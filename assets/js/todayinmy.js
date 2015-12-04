@@ -240,14 +240,15 @@ function getWeather(address)
             "http://forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
             encodeURIComponent(address.coords.latitude) +
             "&lon=" +
-            encodeURIComponent(address.coords.longitude),
+            encodeURIComponent(address.coords.longitude) +
+            "&callback=?",
             function(weather) {
-                var temperatureF = weather.currentObservation.Temp;
+                console.log(weather)
+                var temperatureF = weather.currentobservation.Temp;
                 document.getElementById("weatherdescription").innerHTML =
-                    weather.currentObservation.Weather;
+                    weather.currentobservation.Weather.toLowerCase();
 
-                document.getElementById("temperature").innerHTML =
-                    temperatureF.toPrecision(4);
+                document.getElementById("temperature").innerHTML = temperatureF;
 
                 $("#weatherinfo").removeClass("hidden");
             });
