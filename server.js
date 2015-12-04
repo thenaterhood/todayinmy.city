@@ -11,7 +11,7 @@ var memoryCache = cacheManager.caching({
         ttl: 3600
         });
 
-var meetup_api_key = '7d6d59c3e397a6311503b6054127f25';
+var meetup_api_key = process.env.MEETUP_API_KEY;
 
 
 /**
