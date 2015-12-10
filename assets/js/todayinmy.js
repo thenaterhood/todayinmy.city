@@ -150,7 +150,7 @@ function populatePage(geolocation)
  */
 function getGeoipLocation(callback)
 {
-    $.getJSON("http://www.telize.com/geoip?callback=?",
+    $.getJSON("http://ip-api.com/json/?callback=?",
             function(json) {
                 callback(transformGeoipLocation(json));
             });
@@ -170,8 +170,8 @@ function transformGeoipLocation(json)
 {
     return {
         "coords": {
-            "latitude" : json.latitude,
-            "longitude": json.longitude
+            "latitude" : json.lat,
+            "longitude": json.lon
         }
     };
 }
@@ -278,12 +278,8 @@ function getMeetups(geoip_data, address)
                     var etime = new Date(top4[i].time);
                     var etime_friendly = formatTime(etime);
                     top4[i].time = etime_friendly;
-                    document.getElementById("meetup_events").innerHTML += 
+                    document.getElementById("meetup_events").innerHTML +=
                         Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}}</p>', top4[i]);
                 }
             });
 }
-
-
-
-
