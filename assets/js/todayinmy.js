@@ -150,7 +150,7 @@ function populatePage(geolocation)
  */
 function getGeoipLocation(callback)
 {
-    $.getJSON("http://ip-api.com/json/?callback=?",
+    $.getJSON("http://freegeoip.net/json/?callback=?",
             function(json) {
                 callback(transformGeoipLocation(json));
             });
@@ -170,8 +170,8 @@ function transformGeoipLocation(json)
 {
     return {
         "coords": {
-            "latitude" : json.lat,
-            "longitude": json.lon
+            "latitude" : json.latitude,
+            "longitude": json.longitude
         }
     };
 }
