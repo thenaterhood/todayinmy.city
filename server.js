@@ -117,7 +117,7 @@ var TodayInMyCity = function() {
             var state = req.query.state;
             var cacheKey = 'meetup_' + city + '_' + state;
 
-            cachedValue = memoryCache.get(cacheKey);
+            var cachedValue = memoryCache.get(cacheKey);
 
             if (cachedValue) {
                 console.log("Cache hit! " + cacheKey);
