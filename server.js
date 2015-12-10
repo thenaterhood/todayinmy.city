@@ -115,12 +115,14 @@ var TodayInMyCity = function() {
             var latitude = req.query.latitude;
             var city = req.query.city;
             var state = req.query.state;
-            var cacheKey = city + "," + state;
+            var cacheKey = 'meetup_' + city + '_' + state;
 
-            if (memoryCache.get(cacheKey)) {
+            cachedValue = memoryCache.get(cacheKey);
+
+            if (cachedValue) {
                 console.log("Cache hit! " + cacheKey);
                 response.header("Access-Control-Allow-Origin", "*");
-                response.json(memoryCache.get(cacheKey));
+                response.json(cachedValue);
             } else {
                 var url = "https://api.meetup.com/2/open_events?and_text=False&offset=0&format=json&lon=" + longitude + "&limited_events=False&photo-host=public&page=20&radius=25.0&lat=" + latitude + "&desc=False&status=upcoming&key=" + meetup_api_key;
                 request({
@@ -194,4 +196,3 @@ var TodayInMyCity = function() {
 var zapp = new TodayInMyCity();
 zapp.initialize();
 zapp.start();
-
