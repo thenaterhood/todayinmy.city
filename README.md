@@ -15,7 +15,7 @@ It will get cleaned up in time.
 
 * forecast.weather.gov
 * openstreetmap.org
-* telize (no longer up, has not been removed from the project yet)
+* ip-api.com (geoip API for when geolocation fails)
 * meetup.com (you will need an account and an API key)
 
 ## OpenShift
