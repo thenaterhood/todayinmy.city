@@ -1,5 +1,4 @@
 #!/bin/env node
-//  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
 var cacheManager = require('cache-manager');
@@ -15,7 +14,7 @@ var meetup_api_key = process.env.MEETUP_API_KEY;
 
 
 /**
- *  Define the sample application.
+ *  Define the application.
  */
 var TodayInMyCity = function() {
 
@@ -71,7 +70,7 @@ var TodayInMyCity = function() {
      */
     self.terminator = function(sig){
         if (typeof sig === "string") {
-            console.log('%s: Received %s - terminating sample app ...',
+            console.log('%s: Received %s - terminating TodayInMyCity...',
                     Date(Date.now()), sig);
             process.exit(1);
         }
@@ -163,7 +162,7 @@ var TodayInMyCity = function() {
 
 
     /**
-     *  Initializes the sample application.
+     *  Initializes the application.
      */
     self.initialize = function() {
         self.setupVariables();
@@ -176,7 +175,7 @@ var TodayInMyCity = function() {
 
 
     /**
-     *  Start the server (starts up the sample application).
+     *  Start the server (starts up the application).
      */
     self.start = function() {
         //  Start the app on the specific interface (and port).

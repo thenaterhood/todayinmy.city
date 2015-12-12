@@ -1,7 +1,7 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "TodayInMyCity",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "TodayInMy.City application",
   "keywords": [
     "OpenShift",
     "Node.js",
@@ -9,14 +9,14 @@
     "openshift"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+    "name": "Nate Levesque",
+    "email": "public@thenaterhood.com",
+    "url": "http://www.thenaterhood.com"
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://todayinmy.city",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "https://github.com/thenaterhood/todayinmy.city"
   },
 
   "engines": {
