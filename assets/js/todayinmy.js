@@ -150,7 +150,7 @@ function populatePage(geolocation)
  */
 function getGeoipLocation(callback)
 {
-    $.getJSON("http://freegeoip.net/json/?callback=?",
+    $.getJSON("//freegeoip.net/json/?callback=?",
             function(json) {
                 callback(transformGeoipLocation(json));
             });
@@ -203,7 +203,7 @@ function getLocation(callback)
 function reverseLookupCity(latitude, longitude, callback)
 {
     $.getJSON(
-            "http://nominatim.openstreetmap.org/reverse?format=json&lat="
+            "//nominatim.openstreetmap.org/reverse?format=json&lat="
             + latitude + "&lon=" + longitude + "&zoom=18",
             function(json) {
                 address = json.address
@@ -237,7 +237,7 @@ function getWeather(address)
     console.log(address);
 
     $.getJSON(
-            "http://forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
+            "//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
             encodeURIComponent(address.coords.latitude) +
             "&lon=" +
             encodeURIComponent(address.coords.longitude) +
@@ -267,7 +267,7 @@ function getMeetups(geoip_data, address)
     var town = address.normalized_town;
 
     $.getJSON(
-            "/endpoint/meetup?longitude=" +
+            "//todayinmycity-thenaterhood.rhcloud.com/endpoint/meetup?longitude=" +
             geoip_data.coords.longitude + "&latitude=" +
             geoip_data.coords.latitude + "&city=" + encodeURIComponent(town) +
             "&state=" + encodeURIComponent(address.state),
