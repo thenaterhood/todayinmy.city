@@ -237,7 +237,11 @@ function getWeather(address)
     console.log(address);
 
     $.getJSON(
-            "//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
+            // If you are running this on your own machine, please do not
+            // use my mirrored endpoint for forecast.weather.gov. Please use
+            // the commented line instead.
+            //"//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
+            "/endpoint/forecast?FcstType=json&lat=" +
             encodeURIComponent(address.coords.latitude) +
             "&lon=" +
             encodeURIComponent(address.coords.longitude) +

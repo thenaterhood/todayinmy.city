@@ -109,6 +109,32 @@ var TodayInMyCity = function() {
             res.send(self.cache_get('index.html') );
         };
 
+        self.routes['/endpoint/forecast'] = function(req, response) {
+            var FcstType = req.query.FcstType;
+            var lat = req.query.lat;
+            var lon = req.query.lon;
+            var callback = req.query.callback;
+
+            var url = "http://forecast.weather.gov/MapClick.php?FcstType=" + FcstType + "&lat=" + lat + "&lon=" + lon;
+            request({
+                    url: url,
+                    json: true,
+                    timeout: 3000,
+                    method: "GET",
+                    headers: {
+                            "User-Agent": "Mozilla/5.0 NodeJS"
+                    }
+            }, function (error, reply, body) {
+                    console.log(body);
+                    if (!error && reply.statusCode === 200) {
+                        response.header("Access-Control-Allow-Origin", "*");
+                        response.jsonp(body);
+                    } else {
+                        response.jsonp(callback + "({})");
+                    }
+            });
+        }
+
         self.routes['/endpoint/meetup'] = function(req, response) {
             var longitude = req.query.longitude;
             var latitude = req.query.latitude;
