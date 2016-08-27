@@ -241,7 +241,7 @@ function getWeather(address)
             // use my mirrored endpoint for forecast.weather.gov. Please use
             // the commented line instead.
             //"//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
-            "/endpoint/forecast?FcstType=json&lat=" +
+            "//todayinmycity-thenaterhood.rhcloud.com/endpoint/forecast?FcstType=json&lat=" +
             encodeURIComponent(address.coords.latitude) +
             "&lon=" +
             encodeURIComponent(address.coords.longitude) +

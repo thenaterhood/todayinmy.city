@@ -125,7 +125,6 @@ var TodayInMyCity = function() {
                             "User-Agent": "Mozilla/5.0 NodeJS"
                     }
             }, function (error, reply, body) {
-                    console.log(body);
                     if (!error && reply.statusCode === 200) {
                         response.header("Access-Control-Allow-Origin", "*");
                         response.jsonp(body);
@@ -183,7 +182,10 @@ var TodayInMyCity = function() {
             self.app.get(r, self.routes[r]);
         }
 
-        self.app.use(express.static(__dirname+'/assets'));
+        self.app.use('/js', express.static(__dirname+'/js'));
+        self.app.use('/css', express.static(__dirname+'/css'));
+        self.app.use('/fonts', express.static(__dirname+'/fonts'));
+        self.app.use('/img', express.static(__dirname+'/img'));
     };
 
 
