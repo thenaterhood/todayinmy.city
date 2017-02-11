@@ -284,8 +284,10 @@ function getMeetups(geoip_data, address)
                     var etime = new Date(top4[i].time);
                     var etime_friendly = formatTime(etime);
                     top4[i].time = etime_friendly;
+                    top4[i].group_name = top4[i].group.name;
+                    top4[i].group_url = "https://www.meetup.com/" + top4[i].group.urlname;
                     document.getElementById("meetup_events").innerHTML +=
-                        Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}}</p>', top4[i]);
+                        Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}} with <a href="{{group_url}}">{{group_name}}</a></p>', top4[i]);
                 }
             });
 }
