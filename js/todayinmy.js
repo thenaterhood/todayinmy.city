@@ -134,12 +134,26 @@ function populatePage(geolocation)
             geolocation.coords.latitude,
             geolocation.coords.longitude,
             function(address) {
+                let wikiTitle = "Rochester" + ", " + address.county + ", " + address.state;
 
                 document.getElementById("cityname").innerHTML =
                     address.normalized_town;
                 $("#locateme").addClass("hidden");
                 getWeather(geolocation);
                 getMeetups(geolocation, address);
+                getWikipediaExcerpt(wikiTitle, function(data){
+                    let max_extract = 300;
+                    if (data === null) {
+                        console.log("Could not find " + wikiTitle + " on wikipedia :(");
+                        return;
+                    }
+
+                    if (data.extract.length > max_extract) {
+                        data.extract = data.extract.substring(0, max_extract) + "\u2026";
+                    }
+                    document.getElementById('cityinfo').textContent = data.extract;
+                    document.getElementById('cityinfo_more').innerHTML = '<a href="' + data.url + '">More on Wikipedia</a>';
+                }, null);
             });
 }
 
