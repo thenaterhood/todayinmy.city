@@ -1,203 +1,176 @@
 <!DOCTYPE HTML>
 <!--
-	Photon by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    Forty by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Today In My City</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-                <script>
-                    var proto = String.fromCharCode(104,116,116,112,115,58);
-                    if (window.location.protocol != proto) {
-//                      window.location.href = proto + window.location.href.substring(window.location.protocol.length);
-                    }
-                </script>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery.scrolly.min.js"></script>
-		<script src="js/skel.min.js"></script>
-		<script src="js/init.js"></script>
-                <script src="js/wikipedia.js"></script>
-                <script src="js/todayinmy.js"></script>
-                <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
-                <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-5020962-10', 'auto');
-  ga('send', 'pageview');
-
-                </script>
-
-		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-xlarge.css" />
-		</noscript>
-		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
-                <style type="text/css">
-                .hidden {
-                        display: none;
-                }
-                </style>
-                <script type="application/javascript">
-                $(document).ready(function() {
-                        var now = new Date();
-                        if (isNight(now)) {
-                                $("#mainicon").addClass("fa-moon-o");
-                        } else {
-                                $("#mainicon").addClass("fa-sun-o");
-                        }
-                        getData();
-                });
-                </script>
-	</head>
-	<body>
-
-		<!-- Header -->
-			<section id="header">
-				<div class="inner">
-					<span id="mainicon" class="icon major"></span>
-                                        <h1>Today in <span id="cityname">my.city</span></h1>
-                                        <span id="locateme">
-                                                <p>Locating you...</p>
-                                                <p><a onclick="getDataGeoip();" href="#">Click here if nothing happens or you block location requests</a></p>
-                                                <noscript>
-                                                        <p>This website requires Javascript</p>
-                                                </noscript>
-                                        </span>
-                                        <span id="weatherinfo" class="hidden">
-                                                <p>The current weather is <span id="weatherdescription">loading...</span> with a temperature of <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">loading...</span> &deg;<span id="temperature_unit">F</span></a>.</p>
-                                                <br />
-                                        </span>
-                                        <span id="cityinfo"></span>
-                                        <span id="cityinfo_more"></span>
-                                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                        <!-- above-fold todayinmy.city -->
-                                        <ins class="adsbygoogle"
-                                                 style="display:block"
-                                                      data-ad-client="ca-pub-0222425781505632"
-                                                           data-ad-slot="5954443586"
-                                                                data-ad-format="auto"></ins>
-                                                                <script>
+    <head>
+        <title>Today In My City</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <script src="/assets/js/config.js"></script>
+        <script>
+var proto = String.fromCharCode(104,116,116,112,115,58);
+if (window.location.protocol != proto && CONFIG.redirect_to_https) {
+    window.location.href = proto + window.location.href.substring(window.location.protocol.length);
+}
+        </script>
+        <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-5020962-10', 'auto');
+ga('send', 'pageview');
+        </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/wikipedia.js"></script>
+        <script src="/assets/js/todayinmy.js"></script>
+        <script type="application/javascript">
+$(document).ready(function() {
+    var now = new Date();
+    if (isNight(now)) {
+        //$("#mainicon").addClass("fa-moon-o");
+    } else {
+        //$("#mainicon").addClass("fa-sun-o");
+    }
+    getLocation(populatePage);
+});
+        </script>
+        <style type="text/css">
+.hidden {
+    display: none;
+}
+        </style>
+    </head>
+    <body>
+        <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Menu -->
+            <nav id="menu">
+                <ul class="links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="landing.html">Landing</a></li>
+                    <li><a href="generic.html">Generic</a></li>
+                    <li><a href="elements.html">Elements</a></li>
+                </ul>
+                <ul class="actions vertical">
+                    <li><a href="#" class="button special fit">Get Started</a></li>
+                    <li><a href="#" class="button fit">Log In</a></li>
+                </ul>
+            </nav>
+            <!-- Banner -->
+            <section id="banner" class="major">
+                <div class="inner">
+                    <header class="major">
+                        <h1><span id="mainicon"></span>Today In <span id="cityname">My City</span></h1>
+                    </header>
+                    <div class="content">
+                        <span id="locateme">
+                            <p>Locating you...</p>
+                            <p><a onclick="getGeoipLocation(populatePage);" href="#">Click here if nothing happens</a></p>
+                            <noscript>
+                                <p>This website requires Javascript</p>
+                            </noscript>
+                        </span>
+                        <span class="hidden" id="weatherinfo">
+                            <p>The current weather is <span id="weatherdescription">loading...</span> with a temperature of <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">loading...</span> &deg;<span id="temperature_unit">F</span></a>.<br />
+                            <ul class="actions">
+                                <li><a href="#one" class="button scrolly">About this city</a></li>
+                                <li><a href="#two" class="button scrolly">Events Today</a></li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <!-- Main -->
+            <div id="main">
+                <section id="three">
+                    <div class="inner">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- above-fold todayinmy.city -->
+                        <ins class="adsbygoogle"
+                             style="display:block;"
+                             data-ad-client="ca-pub-0222425781505632"
+                             data-ad-slot="5954443586"
+                             data-ad-format="auto"></ins>
+                        <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                                                                </script>
-                                        <br />
-					<ul class="actions">
-						<li><a href="#one" class="button scrolly">What's going on today?</a></li>
-					</ul>
-				</div>
-			</section>
-
-		<!-- One -->
-			<section id="one" class="main style1">
-				<div class="container">
-					<div class="150%" style="text-align: center">
-								<h2>Local Events on Meetup</h2>
-                                                        <p><span style="display:block;" id="meetup_events">Loading...</span></p>
-					</div>
-				</div>
-			</section>
-<!--
-			<section id="two" class="main style2">
-				<div class="container">
-					<div class="row 150%">
-						<div class="6u 12u$(medium)">
-							<ul class="major-icons">
-								<li><span class="icon style1 major fa-code"></span></li>
-								<li><span class="icon style2 major fa-bolt"></span></li>
-								<li><span class="icon style3 major fa-camera-retro"></span></li>
-								<li><span class="icon style4 major fa-cog"></span></li>
-								<li><span class="icon style5 major fa-desktop"></span></li>
-								<li><span class="icon style6 major fa-calendar"></span></li>
-							</ul>
-						</div>
-						<div class="6u$ 12u$(medium)">
-							<header class="major">
-								<h2>Lorem ipsum dolor adipiscing<br />
-								amet dolor consequat</h2>
-							</header>
-							<p>Adipiscing a commodo ante nunc accumsan interdum mi ante adipiscing. A nunc lobortis non nisl amet vis volutpat aclacus nascetur ac non. Lorem curae eu ante amet sapien in tempus ac. Adipiscing id accumsan adipiscing ipsum.</p>
-							<p>Blandit faucibus proin. Ac aliquam integer adipiscing enim non praesent vis commodo nunc phasellus cubilia ac risus accumsan. Accumsan blandit. Lobortis phasellus non lobortis dit varius mi varius accumsan lobortis. Blandit ante aliquam lacinia lorem lobortis semper morbi col faucibus vitae integer placerat accumsan orci eu mi odio tempus adipiscing adipiscing adipiscing curae consequat feugiat etiam dolore.</p>
-							<p>Adipiscing a commodo ante nunc accumsan interdum mi ante adipiscing. A nunc lobortis non nisl amet vis volutpat aclacus nascetur ac non. Lorem curae eu ante amet sapien in tempus ac. Adipiscing id accumsan adipiscing ipsum.</p>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section id="three" class="main style1 special">
-				<div class="container">
-					<header class="major">
-						<h2>Adipiscing amet consequat</h2>
-					</header>
-					<p>Ante nunc accumsan et aclacus nascetur ac ante amet sapien sed.</p>
-					<div class="row 150%">
-						<div class="4u 12u$(medium)">
-							<span class="image fit"><img src="images/pic02.jpg" alt="" /></span>
-							<h3>Magna feugiat lorem</h3>
-							<p>Adipiscing a commodo ante nunc magna lorem et interdum mi ante nunc lobortis non amet vis sed volutpat et nascetur.</p>
-							<ul class="actions">
-								<li><a href="#" class="button">More</a></li>
-							</ul>
-						</div>
-						<div class="4u 12u$(medium)">
-							<span class="image fit"><img src="images/pic03.jpg" alt="" /></span>
-							<h3>Magna feugiat lorem</h3>
-							<p>Adipiscing a commodo ante nunc magna lorem et interdum mi ante nunc lobortis non amet vis sed volutpat et nascetur.</p>
-							<ul class="actions">
-								<li><a href="#" class="button">More</a></li>
-							</ul>
-						</div>
-						<div class="4u$ 12u$(medium)">
-							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
-							<h3>Magna feugiat lorem</h3>
-							<p>Adipiscing a commodo ante nunc magna lorem et interdum mi ante nunc lobortis non amet vis sed volutpat et nascetur.</p>
-							<ul class="actions">
-								<li><a href="#" class="button">More</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section id="four" class="main style2 special">
-				<div class="container">
-					<header class="major">
-						<h2>Ipsum feugiat consequat?</h2>
-					</header>
-					<p>Sed lacus nascetur ac ante amet sapien.</p>
-					<ul class="actions uniform">
-						<li><a href="#" class="button special">Sign Up</a></li>
-						<li><a href="#" class="button">Learn More</a></li>
-					</ul>
-				</div>
-			</section>
+                        </script>
+                    </div>
+                </section>
+                <!-- One -->
+                <section id="one" class="tiles">
+                    <article>
+                        <header class="major">
+                            <h3>Where You Are</h3>
+                            <p><em>Based on what your browser is telling us. Your actual location may vary slightly.</em></p>
+                            <br />
+                            <p id="address"></p>
+                        </header>
+                    </article>
+                    <article>
+                        <header class="major">
+                            <h3>City Facts</h3>
+                            <p><span id="cityinfo"></span>
+                            <span id="cityinfo_more"></span></p>
+                        </header>
+                    </article>
+                </section>
+                <!-- Two -->
+                <section id="three">
+                    <div class="inner">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- belowfold-todayinmycity -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-0222425781505632"
+                             data-ad-slot="2852226381"
+                             data-ad-format="auto"></ins>
+                        <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </section>
+                <section id="two">
+                    <div class="inner">
+                        <header class="major">
+                            <h2>Local Meetup Events</h2>
+                        </header>
+                        <p><span style="display:block;" id="meetup_events">Loading...</span></p>
+                        <!--
+                            <ul class="actions">
+                            <li><a href="landing.html" class="button next">Get Started</a></li>
+                            </ul>
                         -->
-
-		<!-- Footer -->
-			<section id="footer">
-                                <!--
-				<ul class="icons">
-					<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-					<li><a href="#" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-
-                                -->
-				<ul class="copyright">
-                                        <li>&copy; <a href="http://www.thenaterhood.com">Nate Levesque (thenaterhood)</a></li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Licensed under the MIT license</li><li><a href="https://github.com/thenaterhood/todayinmy.city">Contribute</a></li>
-                                        <li>Data sourced from <a href="http://www.openstreetmap.org">OpenStreetMap</a>, <a href="http://forecast.weather.gov">weather.gov</a>, <a href="http://meetup.com">Meetup.com</a>, and <a href="http://www.freegeoip.net">freegeoip.net</a></li>
-				</ul>
-			</section>
-
-	</body>
+                    </div>
+                </section>
+            </div>
+            <!-- Footer -->
+            <footer id="footer">
+                <div class="inner">
+                    <ul class="copyright">
+                        <li>&copy; <a href="https://www.thenaterhood.com">Nate Levesque</a></li>
+                        <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+                        <li><a href="https://github.com/thenaterhood/todayinmy.city">Contribute</a></li>
+                        <li>Data sourced from <a href="http://www.openstreetmap.org">OpenStreetMap</a>, <a href="http://forecast.weather.gov">weather.gov</a>, <a href="http://meetup.com">Meetup.com</a>, <a href="https://wikipedia.org">Wikipedia</a>, and <a href="http://www.freegeoip.net">freegeoip.net</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrolly.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/skel.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+        <script src="assets/js/main.js"></script>
+    </body>
 </html>

@@ -131,30 +131,34 @@ function populatePage(geolocation)
 {
     console.log(geolocation);
     reverseLookupCity(
-            geolocation.coords.latitude,
-            geolocation.coords.longitude,
-            function(address) {
-                let wikiTitle = "Rochester" + ", " + address.county + ", " + address.state;
+        geolocation.coords.latitude,
+        geolocation.coords.longitude,
+        function(address) {
+            let wikiTitle = address.normalized_town + ", " + address.county + ", " + address.state;
 
-                document.getElementById("cityname").innerHTML =
-                    address.normalized_town;
-                $("#locateme").addClass("hidden");
-                getWeather(geolocation);
-                getMeetups(geolocation, address);
-                getWikipediaExcerpt(wikiTitle, function(data){
-                    let max_extract = 300;
-                    if (data === null) {
-                        console.log("Could not find " + wikiTitle + " on wikipedia :(");
-                        return;
-                    }
+            document.getElementById("cityname").innerHTML =
+                address.normalized_town;
+            $("#locateme").addClass("hidden");
+            let streetAddr = address.house_number + " " + address.road + ", " + address.normalized_town + ", " + address.state + " " + address.postcode;
+            document.getElementById('address').textContent = streetAddr;
+            getWeather(geolocation);
+            getMeetups(geolocation, address);
+            getWikipediaExcerpt(wikiTitle, function(data){
+                let max_extract = 300;
+                if (data === null) {
+                    console.log("Could not find " + wikiTitle + " on wikipedia :(");
+                    document.getElementById('cityinfo').textContent = "We couldn't find " + wikiTitle + " on Wikipedia :(";
+                    return;
+                }
 
-                    if (data.extract.length > max_extract) {
-                        data.extract = data.extract.substring(0, max_extract) + "\u2026";
-                    }
-                    document.getElementById('cityinfo').textContent = data.extract;
-                    document.getElementById('cityinfo_more').innerHTML = '<a href="' + data.url + '">More on Wikipedia</a>';
-                }, null);
-            });
+                if (data.extract.length > max_extract) {
+                    data.extract = data.extract.substring(0, max_extract) + "\u2026";
+                }
+                document.getElementById('cityinfo').textContent = data.extract;
+                document.getElementById('cityinfo_more').innerHTML = '<a href="' + data.url + '">More on Wikipedia</a>';
+            }, null);
+
+        });
 }
 
 /**
@@ -165,9 +169,9 @@ function populatePage(geolocation)
 function getGeoipLocation(callback)
 {
     $.getJSON("//freegeoip.net/json/?callback=?",
-            function(json) {
-                callback(transformGeoipLocation(json));
-            });
+        function(json) {
+            callback(transformGeoipLocation(json));
+        });
 }
 
 /**
@@ -217,29 +221,34 @@ function getLocation(callback)
 function reverseLookupCity(latitude, longitude, callback)
 {
     $.getJSON(
-            "//nominatim.openstreetmap.org/reverse?format=json&lat="
-            + latitude + "&lon=" + longitude + "&zoom=18",
-            function(json) {
-                address = json.address
-                    var town = null;
-                if (address.hasOwnProperty('city')) {
-                    town = address.city;
-                } else if (address.hasOwnProperty("town")) {
-                    town = address.town;
-                } else if (address.hasOwnProperty('suburb')) {
-                    town = address.suburb;
-                } else if (address.hasOwnProperty('hamlet')) {
-                    town = address.hamlet;
-                } else if (address.hasOwnProperty('village')) {
-                    town = address.village;
-                } else if (address.hasOwnProperty('locality')) {
-                    town = address.locality;
+        "//nominatim.openstreetmap.org/reverse?format=json&lat="
+        + latitude + "&lon=" + longitude + "&zoom=18",
+        function(json) {
+            address = json.address
+            var town = null;
+            if (address.hasOwnProperty('city')) {
+                town = address.city;
+            } else if (address.hasOwnProperty("town")) {
+                town = address.town;
+            } else if (address.hasOwnProperty('suburb')) {
+                town = address.suburb;
+            } else if (address.hasOwnProperty('hamlet')) {
+                town = address.hamlet;
+            } else if (address.hasOwnProperty('village')) {
+                town = address.village;
+            } else if (address.hasOwnProperty('locality')) {
+                let locality = address.locality;
+                let index = locality.indexOf(" Town");
+                if (index != -1) {
+                    locality = locality.substring(0, index);
                 }
+                town = locality;
+            }
 
-                address.normalized_town = town;
+            address.normalized_town = town;
 
-                callback(address)
-            });
+            callback(address)
+        });
 }
 
 /**
@@ -253,25 +262,25 @@ function getWeather(address)
     console.log(address);
 
     $.getJSON(
-            // If you are running this on your own machine, please do not
-            // use my mirrored endpoint for forecast.weather.gov. Please use
-            // the commented line instead.
-            //"//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
-            "//todayinmycity-thenaterhood.rhcloud.com/endpoint/forecast?FcstType=json&lat=" +
-            encodeURIComponent(address.coords.latitude) +
-            "&lon=" +
-            encodeURIComponent(address.coords.longitude) +
-            "&callback=?",
-            function(weather) {
-                console.log(weather)
-                var temperatureF = weather.currentobservation.Temp;
-                document.getElementById("weatherdescription").innerHTML =
-                    weather.currentobservation.Weather.toLowerCase();
+        // If you are running this on your own machine, please do not
+        // use my mirrored endpoint for forecast.weather.gov. Please use
+        // the commented line instead.
+        //"//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
+        "//todayinmycity-thenaterhood.rhcloud.com/endpoint/forecast?FcstType=json&lat=" +
+        encodeURIComponent(address.coords.latitude) +
+        "&lon=" +
+        encodeURIComponent(address.coords.longitude) +
+        "&callback=?",
+        function(weather) {
+            console.log(weather)
+            var temperatureF = weather.currentobservation.Temp;
+            document.getElementById("weatherdescription").innerHTML =
+                weather.currentobservation.Weather.toLowerCase();
 
-                document.getElementById("temperature").innerHTML = temperatureF;
+            document.getElementById("temperature").innerHTML = temperatureF;
 
-                $("#weatherinfo").removeClass("hidden");
-            });
+            $("#weatherinfo").removeClass("hidden");
+        });
 
 }
 
@@ -287,21 +296,21 @@ function getMeetups(geoip_data, address)
     var town = address.normalized_town;
 
     $.getJSON(
-            "//todayinmycity-thenaterhood.rhcloud.com/endpoint/meetup?longitude=" +
-            geoip_data.coords.longitude + "&latitude=" +
-            geoip_data.coords.latitude + "&city=" + encodeURIComponent(town) +
-            "&state=" + encodeURIComponent(address.state),
-            function(meetups) {
-                var top4 = meetups.results.slice(0,8);
-                document.getElementById("meetup_events").innerHTML = '';
-                for (i = 0; i < top4.length; i++) {
-                    var etime = new Date(top4[i].time);
-                    var etime_friendly = formatTime(etime);
-                    top4[i].time = etime_friendly;
-                    top4[i].group_name = top4[i].group.name;
-                    top4[i].group_url = "https://www.meetup.com/" + top4[i].group.urlname;
-                    document.getElementById("meetup_events").innerHTML +=
-                        Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}} with <a href="{{group_url}}">{{group_name}}</a></p>', top4[i]);
-                }
-            });
+        "//todayinmycity-thenaterhood.rhcloud.com/endpoint/meetup?longitude=" +
+        geoip_data.coords.longitude + "&latitude=" +
+        geoip_data.coords.latitude + "&city=" + encodeURIComponent(town) +
+        "&state=" + encodeURIComponent(address.state),
+        function(meetups) {
+            var top4 = meetups.results.slice(0,8);
+            document.getElementById("meetup_events").innerHTML = '';
+            for (i = 0; i < top4.length; i++) {
+                var etime = new Date(top4[i].time);
+                var etime_friendly = formatTime(etime);
+                top4[i].time = etime_friendly;
+                top4[i].group_name = top4[i].group.name;
+                top4[i].group_url = "https://www.meetup.com/" + top4[i].group.urlname;
+                document.getElementById("meetup_events").innerHTML +=
+                    Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}} with <a href="{{group_url}}">{{group_name}}</a></p>', top4[i]);
+            }
+        });
 }
