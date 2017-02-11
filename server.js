@@ -186,6 +186,7 @@ var TodayInMyCity = function() {
         self.app.use('/css', express.static(__dirname+'/css'));
         self.app.use('/fonts', express.static(__dirname+'/fonts'));
         self.app.use('/img', express.static(__dirname+'/img'));
+        self.app.use('/assets', express.static(__dirname+'/assets'));
     };
 
 
