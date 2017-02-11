@@ -218,6 +218,8 @@ function reverseLookupCity(latitude, longitude, callback)
                     town = address.hamlet;
                 } else if (address.hasOwnProperty('village')) {
                     town = address.village;
+                } else if (address.hasOwnProperty('locality')) {
+                    town = address.locality;
                 }
 
                 address.normalized_town = town;
