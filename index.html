@@ -14,7 +14,7 @@
         <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
         <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
         <script src="/assets/js/config.js"></script>
-        <script src="assets/js/jquery.min.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
 
         <script>
 var proto = String.fromCharCode(104,116,116,112,115,58);
@@ -81,11 +81,13 @@ $(document).ready(function() {
                             </noscript>
                         </span>
                         <span class="hidden" id="weatherinfo">
-                            <p>The current weather is <span id="weatherdescription">loading...</span> with a temperature of <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">loading...</span> &deg;<span id="temperature_unit">F</span></a>.<br />
-                            <ul class="actions">
-                                <li><a href="#one" class="button scrolly">About this city</a></li>
-                                <li><a href="#two" class="button scrolly">Events Today</a></li>
-                            </ul>
+                            <p>The current weather is <span id="weatherdescription">loading...</span> with a temperature of <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">loading...</span> &deg;<span id="temperature_unit">F</span></a>.</p>
+                        </span>
+                        <span class="hidden" id="navbuttons">
+                          <ul class="actions">
+                              <li><a href="#one" class="button scrolly">About this city</a></li>
+                              <li><a href="#two" class="button scrolly">Events Today</a></li>
+                          </ul>
                         </span>
                     </div>
                 </div>

@@ -102,8 +102,8 @@ function toggleTemperatureUnit(id)
             break;
     }
 
-    document.getElementById(id).innerHTML = temperature.toPrecision(4);
-    document.getElementById(id + "_unit").innerHTML = temp_unit;
+    document.getElementById(id).textContent = temperature.toPrecision(4);
+    document.getElementById(id + "_unit").textContent = temp_unit;
 
 }
 /**
@@ -134,30 +134,15 @@ function populatePage(geolocation)
         geolocation.coords.latitude,
         geolocation.coords.longitude,
         function(address) {
-            let wikiTitle = address.normalized_town + ", " + address.county + ", " + address.state;
-
-            document.getElementById("cityname").innerHTML =
+            document.getElementById("cityname").textContent =
                 address.normalized_town;
+
             $("#locateme").addClass("hidden");
-            let streetAddr = address.house_number + " " + address.road + ", " + address.normalized_town + ", " + address.state + " " + address.postcode;
-            document.getElementById('address').textContent = streetAddr;
-            getWeather(geolocation);
-            getMeetups(geolocation, address);
-            getWikipediaExcerpt(wikiTitle, function(data){
-                let max_extract = 300;
-                if (data === null) {
-                    console.log("Could not find " + wikiTitle + " on wikipedia :(");
-                    document.getElementById('cityinfo').textContent = "We couldn't find " + wikiTitle + " on Wikipedia :(";
-                    return;
-                }
-
-                if (data.extract.length > max_extract) {
-                    data.extract = data.extract.substring(0, max_extract) + "\u2026";
-                }
-                document.getElementById('cityinfo').textContent = data.extract;
-                document.getElementById('cityinfo_more').innerHTML = '<a href="' + data.url + '">More on Wikipedia</a>';
-            }, null);
-
+            populateWeather(geolocation);
+            populateMeetups(geolocation, address);
+            populateWikipediaExerpt(address);
+            populateAddress(address);
+            $("#navbuttons").removeClass("hidden");
         });
 }
 
@@ -257,7 +242,7 @@ function reverseLookupCity(latitude, longitude, callback)
  * @param {Object} geoip_data
  *      An object with at least the properties "city" and "state"
  */
-function getWeather(address)
+function populateWeather(address)
 {
     console.log(address);
 
@@ -273,15 +258,20 @@ function getWeather(address)
         "&callback=?",
         function(weather) {
             console.log(weather)
-            var temperatureF = weather.currentobservation.Temp;
-            document.getElementById("weatherdescription").innerHTML =
-                weather.currentobservation.Weather.toLowerCase();
+            let weatherInfo = $('#weatherinfo');
+            if (weather.hasOwnProperty('currentobservation')) {
+                var temperatureF = weather.currentobservation.Temp;
+                $("#weatherdescription").text(
+                    weather.currentobservation.Weather.toLowerCase()
+                );
 
-            document.getElementById("temperature").innerHTML = temperatureF;
-
-            $("#weatherinfo").removeClass("hidden");
+                $("#temperature").text(temperatureF);
+            } else {
+                console.log("No weather information was retrieved");
+                weatherInfo.text("We weren't able to load the weather :(");
+            }
+            weatherInfo.removeClass("hidden");
         });
-
 }
 
 /**
@@ -290,7 +280,7 @@ function getWeather(address)
  * @param {Object} geoip_data
  *      Geographic location looking like {coords:{latitude = xxx, longitude = yyy}}
  */
-function getMeetups(geoip_data, address)
+function populateMeetups(geoip_data, address)
 {
     console.log(address);
     var town = address.normalized_town;
@@ -301,16 +291,48 @@ function getMeetups(geoip_data, address)
         geoip_data.coords.latitude + "&city=" + encodeURIComponent(town) +
         "&state=" + encodeURIComponent(address.state),
         function(meetups) {
-            var top4 = meetups.results.slice(0,8);
-            document.getElementById("meetup_events").innerHTML = '';
-            for (i = 0; i < top4.length; i++) {
-                var etime = new Date(top4[i].time);
-                var etime_friendly = formatTime(etime);
-                top4[i].time = etime_friendly;
-                top4[i].group_name = top4[i].group.name;
-                top4[i].group_url = "https://www.meetup.com/" + top4[i].group.urlname;
-                document.getElementById("meetup_events").innerHTML +=
-                    Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}} with <a href="{{group_url}}">{{group_name}}</a></p>', top4[i]);
+            if (meetups.hasOwnProperty('results')) {
+                var top4 = meetups.results.slice(0,8);
+                document.getElementById("meetup_events").innerHTML = '';
+                for (i = 0; i < top4.length; i++) {
+                    var etime = new Date(top4[i].time);
+                    var etime_friendly = formatTime(etime);
+                    top4[i].time = etime_friendly;
+                    top4[i].group_name = top4[i].group.name;
+                    top4[i].group_url = "https://www.meetup.com/" + top4[i].group.urlname;
+                    document.getElementById("meetup_events").innerHTML +=
+                        Mustache.render('<p class="meetup_event"><a href="{{event_url}}">{{name}}</a> - at {{time}} with <a href="{{group_url}}">{{group_name}}</a></p>', top4[i]);
+                }
+            } else {
+                document.getElementById('meetup_events').textContent = "Meetup didn't have any events for us.";
             }
         });
+}
+
+function populateWikipediaExerpt(address)
+{
+    let wikiTitle = address.normalized_town + ", " + address.county + ", " + address.state;
+    getWikipediaExcerpt(wikiTitle,
+        function(data){
+            let max_extract = 300;
+            if (data.extract.length > max_extract) {
+                data.extract = data.extract.substring(0, max_extract) + "\u2026";
+            }
+            $('#cityinfo').text(data.extract);
+            $('#cityinfo_more').html('<a href="' + data.url + '">More on Wikipedia</a>');
+        }, function(data){
+            console.log("Could not find " + wikiTitle + " on wikipedia :(");
+            $('#cityinfo').text("We couldn't find " + wikiTitle + " on Wikipedia :(");
+        });
+}
+
+function populateAddress(address)
+{
+    let streetAddr = "";
+    if (address.hasOwnProperty('house_number')) {
+        streetAddr += address.house_number + " ";
+    }
+
+    streetAddr += address.road + ", " + address.normalized_town + ", " + address.state + " " + address.postcode;
+    $('#address').text(streetAddr);
 }

@@ -21,22 +21,21 @@ function handleAPIResponse(wikipediaData, callback, failCallback)
 
     if (wikipediaData === null) {
         failCallback(null);
-        return;
+    } else {
+
+        let query = wikipediaData.query.pages;
+        for (first in query) break;
+
+        if (query[first].hasOwnProperty('missing')) {
+            failCallback(null);
+        } else {
+
+            let data = []
+            data.title = query[first].title;
+            data.extract = query[first].extract;
+            data.url = 'https://en.wikipedia.org/wiki/' + data.title
+
+            callback(data);
+        }
     }
-
-    let query = wikipediaData.query.pages;
-    for (first in query) break;
-
-    if (query[first].hasOwnProperty('missing')) {
-        failCallback(null);
-        return;
-    }
-
-    let data = []
-    data.title = query[first].title;
-    data.extract = query[first].extract;
-    data.url = 'https://en.wikipedia.org/wiki/' + data.title
-
-    callback(data);
 }
-
