@@ -318,12 +318,38 @@ function populateWikipediaExerpt(address)
             if (data.extract.length > max_extract) {
                 data.extract = data.extract.substring(0, max_extract) + "\u2026";
             }
-            $('#cityinfo').text(data.extract);
-            $('#cityinfo_more').html('<a href="' + data.url + '">More on Wikipedia</a>');
+            setCityInfo(data.extract, data.url);
+
         }, function(data){
-            console.log("Could not find " + wikiTitle + " on wikipedia :(");
-            $('#cityinfo').text("We couldn't find " + wikiTitle + " on Wikipedia :(");
-        });
+            console.log("Couldn't find what we wanted on Wikipedia - using a less specific search");
+            getWikipediaExcerpt(
+              address.normalized_town + ", " + address.state,
+              function(data){
+                  let max_extract = 300;
+                  if (data.extract.length > max_extract) {
+                      data.extract = data.extract.substring(0, max_extract) + "\u2026";
+                  }
+                  setCityInfo(data.extract, data.url);
+              },
+              function(data){
+                console.log("Could not find " + address.normalized_town + " on wikipedia :(");
+                setCityInfo(
+                  "We couldn't find " + address.normalized_town + " on Wikipedia :(",
+                  null
+                )
+              }
+            )
+        }.bind(address));
+}
+
+function setCityInfo(extract, url)
+{
+    $('#cityinfo').text(extract);
+    if (url === null) {
+      $('#cityinfo_more').html('');
+    } else {
+      $('#cityinfo_more').html('<a href="' + url + '">More on Wikipedia</a>')
+    }
 }
 
 function populateAddress(address)
