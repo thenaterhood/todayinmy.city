@@ -11,7 +11,7 @@ function getWikipediaExcerpt(name, callback, failCallback)
             handleAPIResponse(json, callback, failCallback);
         })
         .fail(function(data) {
-            handleAPIResponse(null, failCallback, failCallback)
+            handleAPIResponse(null, failCallback, failCallback);
         });
 }
 
