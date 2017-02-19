@@ -6,11 +6,13 @@
  */
 function getWikipediaExcerpt(name, callback, failCallback)
 {
-    $.getJSON("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + name + "&redirects=1&callback=?",
-        function(json) {
+    $.getJSON("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + encodeURIComponent(name) + "&redirects=1&callback=?")
+        .done(function(json) {
             handleAPIResponse(json, callback, failCallback);
         })
-        .fail(handleAPIResponse(null, failCallback, failCallback));
+        .fail(function(data) {
+            handleAPIResponse(null, failCallback, failCallback)
+        });
 }
 
 function handleAPIResponse(wikipediaData, callback, failCallback)
@@ -22,7 +24,6 @@ function handleAPIResponse(wikipediaData, callback, failCallback)
     if (wikipediaData === null) {
         failCallback(null);
     } else {
-
         let query = wikipediaData.query.pages;
         for (first in query) break;
 
