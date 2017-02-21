@@ -32,6 +32,7 @@ ga('send', 'pageview');
         </script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
         <script src="/assets/js/wikipedia.js"></script>
+        <script src="/assets/js/location.js"></script>
         <script src="/assets/js/todayinmy.js"></script>
         <script type="application/javascript">
 
@@ -168,12 +169,13 @@ ga('send', 'pageview');
 
         $(document).ready(function() {
             var now = new Date();
+            let location = new GeoLocation();
             if (isNight(now)) {
                 //$("#mainicon").addClass("fa-moon-o");
             } else {
                 //$("#mainicon").addClass("fa-sun-o");
             }
-            getLocationFromBrowser(populatePage);
+            location.fromBrowser(populatePage, true);
 
             $('#js_zipcode_form').on('submit', function(e) {
                 e.preventDefault();
@@ -183,7 +185,7 @@ ga('send', 'pageview');
 
                 $('#zipcode_input_span').addClass('hidden');
                 $('#locateme').removeClass('hidden');
-                getLocationFromZipcode(zip, populatePage);
+                location.fromZipcode(zip, populatePage);
                 $('#js_zipcode_input').prop('disabled', false);
                 $('#js_zipcode_form').reset();
             });

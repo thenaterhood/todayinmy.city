@@ -111,7 +111,8 @@ function toggleTemperatureUnit(id)
  */
 function getData()
 {
-    getLocationFromBrowser(populatePage);
+    let location = new GeoLocation();
+    location.fromBrowser(populatePage, true);
 }
 
 /**
@@ -119,7 +120,8 @@ function getData()
  */
 function getDataGeoip()
 {
-    getLocationFromGeoip(populatePage);
+    let location = new GeoLocation();
+    location.fromGeoIP(populatePage);
 }
 
 function doZipcodeInput()
@@ -141,13 +143,13 @@ function hideZipcodeInput()
  * @param {Object} geolocation
  *      An object containing at least longitude and latitude
  */
-function populatePage(geolocation)
+function populatePage(locationobj)
 {
-    console.log(geolocation);
-    reverseLookupCity(
-        geolocation.coords.latitude,
-        geolocation.coords.longitude,
+    locationobj.reverseLookupCity(
+        locationobj.lastCoords.coords.latitude,
+        locationobj.lastCoords.coords.longitude,
         function(address) {
+            let geolocation = locationobj.lastCoords;
             $("#cityname").html(
               Mustache.render(
                 '<a onclick="doZipcodeInput();" title="Click to change your location">{{ town_name }}<sup>&#x270E;</sup></a>',
@@ -159,123 +161,9 @@ function populatePage(geolocation)
             populateWeather(geolocation);
             populateMeetups(geolocation, address);
             populateWikipediaExerpt(address);
-            populateAddress(address);
+            $('#address').text(locationobj.getHumanAddress());
             $("#navbuttons").removeClass("hidden");
-        });
-}
-
-/**
- * Gets the location of the user based on their IP address
- * @param {Function} callback
- *      A callback function. Should accept an object
- */
-function getLocationFromGeoip(callback)
-{
-    console.log("GeoIP location request...");
-    $.getJSON("https://freegeoip.net/json/?callback=?")
-        .done(function(json) {
-            console.log("Got GeoIP location...");
-            callback(transformGeoipLocation(json));
-        })
-        .fail(function(data) {
-            console.log("Getting GeoIP location failed");
-        });
-}
-
-function getLocationFromZipcode(zipcode, callback)
-{
-    console.log("Zipcode location request...");
-    $.getJSON("//nominatim.openstreetmap.org/search?format=json&postalcode=" + encodeURIComponent(zipcode) + "&country=US")
-        .done(function(json) {
-            let transformed = {
-                "coords": {
-                    "latitude": json[0].lat,
-                    "longitude": json[0].lon
-                }
-            };
-
-            callback(transformed);
-        })
-        .fail(function(data) {
-            console.log("Unable to get location from zipcode");
-        });
-}
-
-/**
- * Transform a geoip location from telize.com into an object
- * resembling that of the object retrieved from requesting
- * location from the browser
- * @param {Object} json
- *      The geoip object to transform. Needs to have properties
- *      'latitude' and 'longitude'
- * @return {Object}
- *      Object resembling a coordinate
- */
-function transformGeoipLocation(json)
-{
-    return {
-        "coords": {
-            "latitude" : json.latitude,
-            "longitude": json.longitude
-        }
-    };
-}
-
-/**
- * Retrieves the location of the user by requesting it, and falling
- * back on Geoip if the facilities aren't available.
- *
- * @param {Function} callback
- *      A callback function
- */
-function getLocationFromBrowser(callback)
-{
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(callback);
-    } else {
-        getGeoipLocation(callback);
-        console.log("Browser does not support geolocation");
-    }
-}
-
-/**
- * Performs a reverse lookup of a city, calling the callback with the address
- * from the latitude and longitude.
- * @param {int} latitude
- * @param {int} longitude
- * @param {Function} callback
- */
-function reverseLookupCity(latitude, longitude, callback)
-{
-    $.getJSON(
-        "//nominatim.openstreetmap.org/reverse?format=json&lat="
-        + latitude + "&lon=" + longitude + "&zoom=18",
-        function(json) {
-            address = json.address
-            var town = null;
-            if (address.hasOwnProperty('city')) {
-                town = address.city;
-            } else if (address.hasOwnProperty("town")) {
-                town = address.town;
-            } else if (address.hasOwnProperty('suburb')) {
-                town = address.suburb;
-            } else if (address.hasOwnProperty('hamlet')) {
-                town = address.hamlet;
-            } else if (address.hasOwnProperty('village')) {
-                town = address.village;
-            } else if (address.hasOwnProperty('locality')) {
-                let locality = address.locality;
-                let index = locality.indexOf(" Town");
-                if (index != -1) {
-                    locality = locality.substring(0, index);
-                }
-                town = locality;
-            }
-
-            address.normalized_town = town;
-
-            callback(address)
-        });
+        }.bind(locationobj));
 }
 
 /**
@@ -286,7 +174,6 @@ function reverseLookupCity(latitude, longitude, callback)
  */
 function populateWeather(address)
 {
-    console.log(address);
     let weatherInfo = $('#weatherinfo');
     weatherInfo.removeClass("hidden");
 
@@ -301,7 +188,6 @@ function populateWeather(address)
         encodeURIComponent(address.coords.longitude) +
         "&callback=?",
         function(weather) {
-            console.log(weather)
             if (weather.hasOwnProperty('currentobservation')) {
                 var temperatureF = weather.currentobservation.Temp;
                 $("#weatherdescription").text(
@@ -324,7 +210,6 @@ function populateWeather(address)
  */
 function populateMeetups(geoip_data, address)
 {
-    console.log(address);
     var town = address.normalized_town;
 
     $.getJSON(
@@ -392,15 +277,4 @@ function setCityInfo(extract, url)
     } else {
       $('#cityinfo_more').html('<a href="' + url + '">More on Wikipedia</a>')
     }
-}
-
-function populateAddress(address)
-{
-    let streetAddr = "";
-    if (address.hasOwnProperty('house_number')) {
-        streetAddr += address.house_number + " ";
-    }
-
-    streetAddr += address.road + ", " + address.normalized_town + ", " + address.state + " " + address.postcode;
-    $('#address').text(streetAddr);
 }
