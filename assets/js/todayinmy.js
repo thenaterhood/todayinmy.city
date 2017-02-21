@@ -111,7 +111,7 @@ function toggleTemperatureUnit(id)
  */
 function getData()
 {
-    getLocation(populatePage);
+    getLocationFromBrowser(populatePage);
 }
 
 /**
@@ -119,7 +119,21 @@ function getData()
  */
 function getDataGeoip()
 {
-    getGeoipLocation(populatePage);
+    getLocationFromGeoip(populatePage);
+}
+
+function doZipcodeInput()
+{
+    $("#zipcode_input_span").removeClass('hidden');
+    $("#navbuttons").addClass('hidden');
+    $("#weatherinfo").addClass('hidden');
+}
+
+function hideZipcodeInput()
+{
+  $("#zipcode_input_span").addClass('hidden');
+  $("#navbuttons").removeClass('hidden');
+  $("#weatherinfo").removeClass('hidden');
 }
 
 /**
@@ -134,8 +148,12 @@ function populatePage(geolocation)
         geolocation.coords.latitude,
         geolocation.coords.longitude,
         function(address) {
-            document.getElementById("cityname").textContent =
-                address.normalized_town;
+            $("#cityname").html(
+              Mustache.render(
+                '<a onclick="doZipcodeInput();" title="Click to change your location">{{ town_name }}<sup>&#x270E;</sup></a>',
+                { 'town_name': address.normalized_town }
+              )
+            );
 
             $("#locateme").addClass("hidden");
             populateWeather(geolocation);
@@ -151,11 +169,35 @@ function populatePage(geolocation)
  * @param {Function} callback
  *      A callback function. Should accept an object
  */
-function getGeoipLocation(callback)
+function getLocationFromGeoip(callback)
 {
-    $.getJSON("//freegeoip.net/json/?callback=?",
-        function(json) {
+    console.log("GeoIP location request...");
+    $.getJSON("https://freegeoip.net/json/?callback=?")
+        .done(function(json) {
+            console.log("Got GeoIP location...");
             callback(transformGeoipLocation(json));
+        })
+        .fail(function(data) {
+            console.log("Getting GeoIP location failed");
+        });
+}
+
+function getLocationFromZipcode(zipcode, callback)
+{
+    console.log("Zipcode location request...");
+    $.getJSON("//nominatim.openstreetmap.org/search?format=json&postalcode=" + encodeURIComponent(zipcode) + "&country=US")
+        .done(function(json) {
+            let transformed = {
+                "coords": {
+                    "latitude": json[0].lat,
+                    "longitude": json[0].lon
+                }
+            };
+
+            callback(transformed);
+        })
+        .fail(function(data) {
+            console.log("Unable to get location from zipcode");
         });
 }
 
@@ -186,7 +228,7 @@ function transformGeoipLocation(json)
  * @param {Function} callback
  *      A callback function
  */
-function getLocation(callback)
+function getLocationFromBrowser(callback)
 {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(callback);
@@ -245,6 +287,8 @@ function reverseLookupCity(latitude, longitude, callback)
 function populateWeather(address)
 {
     console.log(address);
+    let weatherInfo = $('#weatherinfo');
+    weatherInfo.removeClass("hidden");
 
     $.getJSON(
         // If you are running this on your own machine, please do not
@@ -258,7 +302,6 @@ function populateWeather(address)
         "&callback=?",
         function(weather) {
             console.log(weather)
-            let weatherInfo = $('#weatherinfo');
             if (weather.hasOwnProperty('currentobservation')) {
                 var temperatureF = weather.currentobservation.Temp;
                 $("#weatherdescription").text(
@@ -270,7 +313,6 @@ function populateWeather(address)
                 console.log("No weather information was retrieved");
                 weatherInfo.text("We weren't able to load the weather :(");
             }
-            weatherInfo.removeClass("hidden");
         });
 }
 

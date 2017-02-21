@@ -34,15 +34,7 @@ ga('send', 'pageview');
         <script src="/assets/js/wikipedia.js"></script>
         <script src="/assets/js/todayinmy.js"></script>
         <script type="application/javascript">
-$(document).ready(function() {
-    var now = new Date();
-    if (isNight(now)) {
-        //$("#mainicon").addClass("fa-moon-o");
-    } else {
-        //$("#mainicon").addClass("fa-sun-o");
-    }
-    getLocation(populatePage);
-});
+
         </script>
         <style type="text/css">
 .hidden {
@@ -73,9 +65,17 @@ $(document).ready(function() {
                         <h1><span id="mainicon"></span>Today In <span id="cityname">My City</span></h1>
                     </header>
                     <div class="content">
+                        <span id="zipcode_input_span" class="hidden" novalidate="novalidate">
+                            <form id="js_zipcode_form" style="display:inline;">
+                              <input type="text" name="zipcode" id="js_zipcode_input" placeholder="Enter a zipcode..." style="display:inline;">
+                              </input>
+                              <button type="submit" class="button scrolly js_zipinput_submit">Go</button>
+                              <a class="button scrolly" onclick="hideZipcodeInput();">Cancel</a>
+                            </form>
+                        </span>
                         <span id="locateme">
-                            <p>Locating you...</p>
-                            <p><a onclick="getGeoipLocation(populatePage);" href="#">Click here if nothing happens</a></p>
+                            <p><img src="/assets/images/ajax-loader.gif" />Locating you...</p>
+                            <p><a onclick="getDataGeoip();">Click here if nothing happens</a></p>
                             <noscript>
                                 <p>This website requires Javascript</p>
                             </noscript>
@@ -111,13 +111,13 @@ $(document).ready(function() {
                             <h3>Where You Are</h3>
                             <p><em>Based on what your browser is telling us. Your actual location may vary slightly.</em></p>
                             <br />
-                            <p id="address"></p>
+                            <p id="address"><img src="/assets/images/ajax-loader.gif" />Loading...</p>
                         </header>
                     </article>
                     <article>
                         <header class="major">
                             <h3>City Facts</h3>
-                            <p><span id="cityinfo"></span>
+                            <p><span id="cityinfo"><img src="/assets/images/ajax-loader.gif" />Loading...</span>
                             <span id="cityinfo_more"></span></p>
                         </header>
                     </article>
@@ -139,7 +139,7 @@ $(document).ready(function() {
                         <header class="major">
                             <h2>Local Meetup Events</h2>
                         </header>
-                        <p><span style="display:block;" id="meetup_events">Loading...</span></p>
+                        <p><span style="display:block;" id="meetup_events"><img src="/assets/images/ajax-loader.gif" />Loading...</span></p>
                         <!--
                             <ul class="actions">
                             <li><a href="landing.html" class="button next">Get Started</a></li>
@@ -163,9 +163,36 @@ $(document).ready(function() {
         <!-- Scripts -->
         <script src="assets/js/jquery.scrolly.min.js"></script>
         <script src="assets/js/jquery.scrollex.min.js"></script>
+
+        <script type="application/javascript">
+
+        $(document).ready(function() {
+            var now = new Date();
+            if (isNight(now)) {
+                //$("#mainicon").addClass("fa-moon-o");
+            } else {
+                //$("#mainicon").addClass("fa-sun-o");
+            }
+            getLocationFromBrowser(populatePage);
+
+            $('#js_zipcode_form').on('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                $('#js_zipcode_submit').prop('disabled', true);
+                let zip = $('#js_zipcode_input').val();
+
+                $('#zipcode_input_span').addClass('hidden');
+                $('#locateme').removeClass('hidden');
+                getLocationFromZipcode(zip, populatePage);
+                $('#js_zipcode_input').prop('disabled', false);
+                $('#js_zipcode_form').reset();
+            });
+        });
+        </script>
         <script src="assets/js/skel.min.js"></script>
         <script src="assets/js/util.js"></script>
         <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
         <script src="assets/js/main.js"></script>
+
     </body>
 </html>
