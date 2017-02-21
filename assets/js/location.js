@@ -97,11 +97,11 @@ function GeoLocation()
     {
       let streetAddr = "";
       if (this.lastAddress.hasOwnProperty('house_number')) {
-          streetAddr += this.lastAddress.house_number + " ";
+        streetAddr += this.lastAddress.house_number + " ";
       }
 
       if (this.lastAddress.hasOwnProperty('road')) {
-          streetAddr += this.lastAddress.road + ", ";
+        streetAddr += this.lastAddress.road + ", ";
       }
 
       streetAddr += this.lastAddress.normalized_town + ", " + this.lastAddress.state + " " + this.lastAddress.postcode;
