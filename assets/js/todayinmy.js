@@ -126,6 +126,7 @@ function getDataGeoip()
 
 function doZipcodeInput()
 {
+    $("#locateme").addClass('hidden');
     $("#zipcode_input_span").removeClass('hidden');
     $("#navbuttons").addClass('hidden');
     $("#weatherinfo").addClass('hidden');
