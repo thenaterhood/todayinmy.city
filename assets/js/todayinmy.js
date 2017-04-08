@@ -153,7 +153,7 @@ function populatePage(locationobj)
             let geolocation = locationobj.lastCoords;
             $("#cityname").html(
               Mustache.render(
-                '<a onclick="doZipcodeInput();" title="Click to change your location">{{ town_name }}<sup>&#x270E;</sup></a>',
+                '<a onclick="doZipcodeInput();">{{ town_name }}<sup>&#x270E;</sup></a>',
                 { 'town_name': address.normalized_town }
               )
             );

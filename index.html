@@ -63,7 +63,13 @@ ga('send', 'pageview');
             <section id="banner" class="major">
                 <div class="inner">
                     <header class="major">
-                        <h1><span id="mainicon"></span>Today In <span id="cityname">My City</span></h1>
+                        <h1>
+                            <span id="mainicon">
+                            </span>
+                            Today In <span id="cityname" title="Click to change location">
+                                <a onclick="doZipcodeInput();">My City</a>
+                            </span>
+                        </h1>
                     </header>
                     <div class="content">
                         <span id="zipcode_input_span" class="hidden" novalidate="novalidate">
@@ -182,10 +188,13 @@ ga('send', 'pageview');
                 e.stopImmediatePropagation();
                 $('#js_zipcode_submit').prop('disabled', true);
                 let zip = $('#js_zipcode_input').val();
-
                 $('#zipcode_input_span').addClass('hidden');
-                $('#locateme').removeClass('hidden');
-                location.fromZipcode(zip, populatePage);
+                if (zip) {
+                    location.fromZipcode(zip, populatePage);
+                    $('#locateme').removeClass('hidden');
+                } else {
+                    hideZipcodeInput();
+                }
                 $('#js_zipcode_input').prop('disabled', false);
                 $('#js_zipcode_form').reset();
             });
