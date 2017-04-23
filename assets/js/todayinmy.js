@@ -278,4 +278,5 @@ function setCityInfo(extract, url)
     } else {
       $('#cityinfo_more').html('<a href="' + url + '">More on Wikipedia</a>')
     }
+    $(document).trigger('city-info-loaded');
 }
