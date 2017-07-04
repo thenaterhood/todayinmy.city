@@ -240,7 +240,8 @@ function populateMeetups(geoip_data, address)
 function populateWikipediaExerpt(address)
 {
     let wikiTitle = address.normalized_town + ", " + address.county + ", " + address.state;
-    getWikipediaExcerpt(wikiTitle,
+    let wikipedia = new Wikipedia();
+    wikipedia.getArticleExcerpt(wikiTitle,
         function(data){
             let max_extract = 300;
             if (data.extract.length > max_extract) {
@@ -250,7 +251,7 @@ function populateWikipediaExerpt(address)
 
         }, function(data){
             console.log("Couldn't find what we wanted on Wikipedia - using a less specific search");
-            getWikipediaExcerpt(
+            wikipedia.getArticleExcerpt(
               address.normalized_town + ", " + address.state,
               function(data){
                   let max_extract = 300;
