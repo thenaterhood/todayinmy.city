@@ -13,14 +13,14 @@ ul {
     padding-right: 3px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1081px) {
     body {
        margin-left: 25%;
        width: 50%;
     }
 }
 
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 1080px) {
     body {
        margin-left: 5%;
        width: 90%;
