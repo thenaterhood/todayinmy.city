@@ -151,17 +151,12 @@ function populatePage(locationobj)
         locationobj.lastCoords.coords.longitude,
         function(address) {
             let geolocation = locationobj.lastCoords;
-            $("#cityname").html(
-              Mustache.render(
-                '<a onclick="doZipcodeInput();">{{ town_name }}<sup>&#x270E;</sup></a>',
-                { 'town_name': address.normalized_town }
-              )
-            );
-
+            $("#cityname").text(address.normalized_town);
             $("#locateme").addClass("hidden");
             populateWeather(geolocation);
-            populateMeetups(geolocation, address);
+            //populateMeetups(geolocation, address);
             populateWikipediaExerpt(address);
+            populateNearby(address);
             $('#address').text(locationobj.getHumanAddress());
             $("#navbuttons").removeClass("hidden");
         }.bind(locationobj));
@@ -190,6 +185,9 @@ function populateWeather(address)
                 $("#weatherdescription").text(
                     weather.currentobservation.Weather.toLowerCase()
                 );
+                $("#expectedweatherdesc").text(
+                    weather.data.text[0].toLowerCase()
+                );
 
                 $("#temperature").text(temperatureF);
             } else {
@@ -197,6 +195,36 @@ function populateWeather(address)
                 weatherInfo.text("We weren't able to load the weather :(");
             }
         });
+}
+
+function populateNearby(address)
+{
+    let boundingBox_TopLat = +address.lat - 0.02;
+    let boundingBox_TopLon = +address.lon - 0.02;
+    let boundingBox_BottomLat = +address.lat + 0.02;
+    let boundingBox_BottomLon = +address.lon + 0.02;
+
+    $.getJSON(
+            '//www.overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node["amenity"~""](' +
+            boundingBox_TopLat +
+            ',' + boundingBox_TopLon +
+            ',' + boundingBox_BottomLat +
+            ',' + boundingBox_BottomLon +
+            '););out center 50;>;out skel qt;',
+            function(nearby) {
+                if (nearby.elements.length > 0) {
+                    let html = "<ul>";
+                    for (var i = 0; i < nearby.elements.length && i < 11; i++) {
+                        html += "<li><img class='amenity_icon' src='//raw.githubusercontent.com/gravitystorm/openstreetmap-carto/master/symbols/amenity/" + nearby.elements[i].tags.amenity + ".svg?sanitize=true' onerror='this.parentNode.removeChild(this)' />" + nearby.elements[i].tags.name + "</li>";
+                    }
+                    html += "</ul>";
+                    $("#things_near_you").html(html);
+                    console.log(nearby.elements);
+                } else {
+                    $("#things_near_you").html("<p>We couldn't find any amenities nearby :(</p>");
+                }
+            }
+    );
 }
 
 /**

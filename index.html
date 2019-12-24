@@ -1,178 +1,59 @@
 <!DOCTYPE HTML>
-<!--
-    Forty by HTML5 UP
-    html5up.net | @ajlkn
-    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
     <head>
-        <title>Today In My City</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-        <link rel="stylesheet" href="assets/css/main.css" />
-        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-        <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-        <script src="/assets/js/config.js"></script>
+        <script src="/config.js"></script>
+        <link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="/assets/js/jquery.min.js"></script>
-
-        <script>
-var proto = String.fromCharCode(104,116,116,112,115,58);
-if (window.location.protocol != proto && CONFIG.redirect_to_https) {
-    window.location.href = proto + window.location.href.substring(window.location.protocol.length);
-}
-        </script>
-        <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-5020962-10', 'auto');
-ga('send', 'pageview');
-        </script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
+        <script src="/assets/js/todayinmy.js"></script>
         <script src="/assets/js/wikipedia.js"></script>
         <script src="/assets/js/location.js"></script>
-        <script src="/assets/js/todayinmy.js"></script>
-        <script type="application/javascript">
-
-        </script>
-        <style type="text/css">
-.hidden {
-    display: none;
-}
-        </style>
+        <title>Today In My City</title>
+        <meta charset="utf-8" />
     </head>
+
     <body>
-        <!-- Wrapper -->
-        <div id="wrapper">
-            <!-- Menu -->
-            <nav id="menu">
-                <ul class="links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="landing.html">Landing</a></li>
-                    <li><a href="generic.html">Generic</a></li>
-                    <li><a href="elements.html">Elements</a></li>
-                </ul>
-                <ul class="actions vertical">
-                    <li><a href="#" class="button special fit">Get Started</a></li>
-                    <li><a href="#" class="button fit">Log In</a></li>
-                </ul>
-            </nav>
-            <!-- Banner -->
-            <section id="banner" class="major">
-                <div class="inner">
-                    <header class="major">
-                        <h1>
-                            <span id="mainicon">
-                            </span>
-                            Today In <span id="cityname" title="Click to change location">
-                                <a onclick="doZipcodeInput();">My City</a>
-                            </span>
-                        </h1>
-                    </header>
-                    <div class="content">
-                        <span id="zipcode_input_span" class="hidden" novalidate="novalidate">
-                            <form id="js_zipcode_form" style="display:inline;">
-                              <input type="text" name="zipcode" id="js_zipcode_input" placeholder="Enter a zipcode..." style="display:inline;">
-                              </input>
-                              <button type="submit" class="button scrolly js_zipinput_submit">Go</button>
-                              <a class="button scrolly" onclick="hideZipcodeInput();">Cancel</a>
-                            </form>
-                        </span>
-                        <span id="locateme">
-                            <p><img src="/assets/images/ajax-loader.gif" />Locating you...</p>
-                            <p><a onclick="doZipcodeInput();">Click here if nothing happens</a></p>
-                            <noscript>
-                                <p>This website requires Javascript</p>
-                            </noscript>
-                        </span>
-                        <span class="hidden" id="weatherinfo">
-                            <p>The current weather is <span id="weatherdescription">loading...</span> with a temperature of <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">loading...</span> &deg;<span id="temperature_unit">F</span></a>.</p>
-                        </span>
-                        <span class="hidden" id="navbuttons">
-                          <ul class="actions">
-                              <li><a href="#one" class="button scrolly">About this city</a></li>
-                              <li><a href="#two" class="button scrolly">Events Today</a></li>
-                          </ul>
-                        </span>
-                    </div>
-                </div>
-            </section>
-            <!-- Main -->
-            <div id="main">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- above-fold todayinmy.city -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-0222425781505632"
-                     data-ad-slot="5954443586"
-                     data-ad-format="auto"></ins>
-                <script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-0222425781505632"
+             data-ad-slot="5954443586"
+             data-ad-format="auto"></ins>
+        <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-                <!-- One -->
-                <section id="one" class="tiles">
-                    <article>
-                        <header class="major">
-                            <h3>Where You Are</h3>
-                            <p><em>Based on what your browser is telling us. Your actual location may vary slightly.</em></p>
-                            <br />
-                            <p id="address"><img src="/assets/images/ajax-loader.gif" />Loading...</p>
-                        </header>
-                    </article>
-                    <article>
-                        <header class="major">
-                            <h3>City Facts</h3>
-                            <p><span id="cityinfo"><img src="/assets/images/ajax-loader.gif" />Loading...</span>
-                            <span id="cityinfo_more"></span></p>
-                        </header>
-                    </article>
-                </section>
-                <!-- Two -->
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- belowfold-todayinmycity -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-0222425781505632"
-                     data-ad-slot="2852226381"
-                     data-ad-format="auto"></ins>
-                <script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+        </script>
+        <h1>Today In
+             <a onclick="doZipcodeInput();" title="Click to change location" id="cityname">My City</a>
+        </h1>
+        <noscript>
+            <p>This website requires JavaScript</p>
+        </noscript>
+        <p>You're currently at or near <span id="address">...</span>. Want another place? 
+            <span id="zipcode_input_span" style="display:inline;" novalidate="novalidate">
+                <form id="js_zipcode_form" style="display:inline;">
+                    <input type="text" name="zipcode" id="js_zipcode_input" placeholder="Enter a zipcode..." style="display:inline;">
+                    </input>
+                    <button type="submit" class="button scrolly js_zipinput_submit">Go</button>
+                </form>
+            </span>
 
-                <section id="two">
-                    <div class="inner">
-                        <header class="major">
-                            <h2>Local Meetup Events</h2>
-                        </header>
-                        <p><span style="display:block;" id="meetup_events"><img src="/assets/images/ajax-loader.gif" />Loading...</span></p>
-                        <!--
-                            <ul class="actions">
-                            <li><a href="landing.html" class="button next">Get Started</a></li>
-                            </ul>
-                        -->
-                    </div>
-                </section>
-            </div>
-            <!-- Footer -->
-            <footer id="footer">
-                <div class="inner">
-                    <ul class="copyright">
-                        <li>&copy; <a href="https://www.thenaterhood.com">Nate Levesque</a></li>
-                        <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-                        <li><a href="https://github.com/thenaterhood/todayinmy.city">Contribute</a></li>
-                        <li>Data sourced from <a href="http://www.openstreetmap.org">OpenStreetMap</a>, <a href="http://forecast.weather.gov">weather.gov</a>, <a href="http://meetup.com">Meetup.com</a>, <a href="https://wikipedia.org">Wikipedia</a>, and <a href="http://www.freegeoip.net">freegeoip.net</a></li>
-                    </ul>
-                </div>
-            </footer>
-        </div>
-        <!-- Scripts -->
-        <script src="assets/js/jquery.scrolly.min.js"></script>
-        <script src="assets/js/jquery.scrollex.min.js"></script>
+        </p>
+        <span class="hidden" id="weatherinfo">
+            <p>Current weather is <span id="weatherdescription">...</span> and <a href="#" onclick="toggleTemperatureUnit('temperature');" title="Click to switch units"><span id="temperature">...</span> &deg;<span id="temperature_unit">F</span></a>. Expected conditions are <span id="expectedweatherdesc">...</span> Courtesy of the National Weather Service.</p>
+        </span>
 
+        <hr />
+
+        <h2>Things Near You</h2>
+
+        <span id="things_near_you"><img src="/assets/images/ajax-loader.gif" /></span>
+        <hr />
+        <h2>City Facts</h2>
+        <p><span id="cityinfo"><img src="/assets/images/ajax-loader.gif" />...</span>
+        <span id="cityinfo_more"></span></p>
+
+        <hr />
+        <p>Powered by The National Weather Service, OpenStreetMap.org, and Wikipedia.</p>
         <script type="application/javascript">
-
         $(document).ready(function() {
             var now = new Date();
             let location = new GeoLocation();
@@ -200,10 +81,6 @@ ga('send', 'pageview');
             });
         });
         </script>
-        <script src="assets/js/skel.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-        <script src="assets/js/main.js"></script>
 
     </body>
 </html>

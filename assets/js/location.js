@@ -146,6 +146,8 @@ function GeoLocation()
         town = town.substring(0, index);
       }
       address.normalized_town = town;
+      address.lat = locationResponse.lat;
+      address.lon = locationResponse.lon;
 
       return address;
     }
