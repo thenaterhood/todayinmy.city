@@ -59,7 +59,7 @@ function GeoLocation()
         }
       };
       this.lastCoords = transformed;
-      this.lastAddress = this._normalizeAddress(json[0].address);
+      this.lastAddress = this._normalizeAddress(json[0]);
       callback(self);
     }.bind(self))
     .fail(function(data) {
@@ -86,7 +86,7 @@ function GeoLocation()
         this.nominatim + "/reverse?format=json&lat="
         + latitude + "&lon=" + longitude + "&zoom=18",
         function(json) {
-          let address = self._normalizeAddress(json.address);
+          let address = self._normalizeAddress(json);
           self.lastAddress = address;
           callback(address)
         }.bind(self));
@@ -114,9 +114,11 @@ function GeoLocation()
       this.lastAddress = {};
     }
 
-    this._normalizeAddress = function(address)
+    this._normalizeAddress = function(locationResponse)
     {
+      var address = locationResponse.address;
       var town = null;
+
       if (address.hasOwnProperty('city')) {
         town = address.city;
       } else if (address.hasOwnProperty("town")) {
@@ -129,6 +131,14 @@ function GeoLocation()
         town = address.village;
       } else if (address.hasOwnProperty('locality')) {
         let town = address.locality;
+      } else {
+        // Well, sucks that we got here. Gotta parse the
+        // town out of the display name
+        var displayName = locationResponse.display_name;
+        let displayNameIndex = displayName.indexOf(",");
+        if (displayNameIndex != -1) {
+          town = displayName.substring(0, displayNameIndex);
+        }
       }
 
       let index = town.indexOf(" Town");

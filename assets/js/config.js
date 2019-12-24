@@ -1,3 +1,3 @@
 let CONFIG = {
-    "redirect_to_https": true,
+    "redirect_to_https": false,
 }
