@@ -2,11 +2,35 @@ body {
     margin-top: 55px;
     font-family: Helvetica, Arial, sans-serif;
     line-height: 25px;
+    background-color: #1e223a;
+    color: white;
 }
 
 ul {
     list-style: none;
     padding-left: 0;
+}
+
+a {
+    color: white;
+}
+
+h1 {
+   text-transform: uppercase;
+   letter-spacing: 3px;
+}
+
+h2 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+hr {
+    border: 1px solid white;
+}
+
+.hidden {
+    display: none;
 }
 
 .amenity_icon {

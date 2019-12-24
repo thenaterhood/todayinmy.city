@@ -171,7 +171,6 @@ function populatePage(locationobj)
 function populateWeather(address)
 {
     let weatherInfo = $('#weatherinfo');
-    weatherInfo.removeClass("hidden");
 
     $.getJSON(
         "//forecast.weather.gov/MapClick.php?FcstType=json&lat=" +
@@ -194,6 +193,7 @@ function populateWeather(address)
                 console.log("No weather information was retrieved");
                 weatherInfo.text("We weren't able to load the weather :(");
             }
+            weatherInfo.removeClass("hidden");
         });
 }
 
