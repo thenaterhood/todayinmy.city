@@ -1,0 +1,29 @@
+body {
+    margin-top: 55px;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 25px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.amenity_icon {
+    padding-right: 3px;
+}
+
+@media screen and (min-width: 800px) {
+    body {
+       margin-left: 25%;
+       width: 50%;
+    }
+}
+
+@media screen and (max-width: 799px) {
+    body {
+       margin-left: 5%;
+       width: 90%;
+    }
+}
+
