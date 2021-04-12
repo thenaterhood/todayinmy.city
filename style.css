@@ -34,7 +34,9 @@ hr {
 }
 
 .amenity_icon {
-    padding-right: 3px;
+    padding-right: 8px;
+   -webkit-filter: invert(1);
+   filter: invert(1);
 }
 
 @media screen and (min-width: 1081px) {

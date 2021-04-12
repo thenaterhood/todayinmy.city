@@ -215,7 +215,7 @@ function populateNearby(address)
                 if (nearby.elements.length > 0) {
                     let html = "<ul>";
                     for (var i = 0; i < nearby.elements.length && i < 11; i++) {
-                        html += "<li><img class='amenity_icon' src='//raw.githubusercontent.com/gravitystorm/openstreetmap-carto/master/symbols/amenity/" + nearby.elements[i].tags.amenity + ".svg?sanitize=true' onerror='this.parentNode.removeChild(this)' />" + nearby.elements[i].tags.name + "</li>";
+                        html += "<li><img class='amenity_icon' src='//raw.githubusercontent.com/gravitystorm/openstreetmap-carto/master/symbols/amenity/" + nearby.elements[i].tags.amenity + ".svg?sanitize=true' onerror='this.parentNode.removeChild(this)' />" + (nearby.elements[i].tags.website ? "<a target='_blank' href='" + nearby.elements[i].tags.website + "'>" : "") + (nearby.elements[i].tags.name ? nearby.elements[i].tags.name : nearby.elements[i].tags.amenity) + (nearby.elements[i].tags.website ? "</a>" : "" ) + "</li>";
                     }
                     html += "</ul>";
                     $("#things_near_you").html(html);
