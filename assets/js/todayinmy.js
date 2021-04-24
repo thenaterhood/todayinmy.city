@@ -219,7 +219,6 @@ function populateNearby(address)
                     }
                     html += "</ul>";
                     $("#things_near_you").html(html);
-                    console.log(nearby.elements);
                 } else {
                     $("#things_near_you").html("<p>We couldn't find any amenities nearby :(</p>");
                 }
